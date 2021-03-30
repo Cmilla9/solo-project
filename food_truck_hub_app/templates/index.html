@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Food Truck Hub </title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+</head>
+<body>
+    <div id="container">
+        <div class="header">
+            <h1>Welcome to Food Truck Hub!</h1>
+            {% if user == request.session.user %}
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/login">Sign In</a> <a href="/register">Register</a>
+            {% endif %}
+        </div>
+        <div class="body">
+            <h2>About Us</h2>
+            <p>We are a brand new platform that creates a community for Food Trucks. Our Goal is to facilitate your search for specialied foods and to easily discover new businesses in your area. Loved a truck you just ate at? Create an account with us and leave a review of them! Even if you don't want to create an account you can see what pepople are saying about a specific food truck. Welcome to the Food Truck Hub.</p>
+        </div>
+        <div class="body2">
+            <h3>Start Searching!</h3>
+            <form action="{% url 'searchfood' %}" method="POST">
+                {% csrf_token %}
+                <select name="q" id="">
+                    <option value="mexican">Mexican</option>
+                    <option value="sandwhiches">Sandwhiches</option>
+                    <option value="pizza">Pizza</option>
+                    <option value="bbq">BBQ</option>
+                    <option value="indian">Indian</option>
+                    <option value="burgers">Burgers</option>
+                    <option value="peruvian">Peruvian</option>
+                    <option value="hotdog">Hot Dogs</option>
+                    <option value="mediterranean">Mediterranean</option>
+                    <option value="asian">Asian</option>
+                    <option value="italian">Italian</option>
+                </select> <button type="submit">Search</button>
+            </form>
+        <p>Are you a business and want to join our platform?</p>
+        <a href="register_business">Register Business</a>
+        </div>
+        <div class="footer">
+            <div class="map">
+                <h1>Map</h1>
+                <div id="googleMap" style="width:1000px;height:400px;"></div>
+                <script>
+                function myMap() {
+                var mapProp= {
+                center:new google.maps.LatLng(37.809326, -122.409981),
+                zoom:12,
+                };
+                var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                }
+                </script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBknZXs-I2mysFJ2EZL4knEx5jZ4ZRV0KE&callback=myMap"></script>
+            </div>
+            <div class="map">
+                <h3>New Food Trucks That Have Joined</h3>
+                {% for businessuser in businessusers %}
+                <ol>
+                    <li><a href="/business_profile/{{ businessuser.id }}">{{ businessuser.business_name}}</a></li>
+                    <li>{{ businessuser.current_location }}</li>
+                </ol>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

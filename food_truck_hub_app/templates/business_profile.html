@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Food Truck Hub </title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style_business_profile.css' %}"> 
+    <title>Business Profile</title>
+</head>
+<body>
+    <div id="container">
+        <div class="header">
+            <h1>Food Truck Hub</h1>
+            <a href="/">Home</a>
+            {% if messages %}
+            <ul class="messages">    
+            {% for message in messages %}    
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="body">
+            <div class="body_header">
+                <h4>Business Profile</h4>
+            </div>
+            <div class="update">
+                {% if request.session.businessuser_id == businessuser.id %}
+                <form action="update_business/{{ businessuser.id }}" method="POST">
+                    {% csrf_token %}
+                    <h1>Business Name: <input type="text" name="business_name" value="{{  businessuser.business_name }}"></h1>
+                    <p>Current Location: <input type="text" name="current_location" value="{{ businessuser.current_location }}"></p>
+                    <p>Email: <input type="text" name="email" value="{{ businessuser.email }}"></p>
+                    <p>Phone Number: <input type="text" name="phone_number" value="{{ businessuser.phone_number }}"></p>
+            </div>
+            <div class="update">
+                    <p>Description: <textarea name="description" cols="30" rows="10">{{ businessuser.description }}</textarea></p>
+                    <p>Food Category <select name="food_category" value="{{ businessuser.food_category }}">
+                        <option value="mexican">Mexican</option>
+                        <option value="sandwhiches">Sandwhiches</option>
+                        <option value="pizza">Pizza</option>
+                        <option value="bbq">BBQ</option>
+                        <option value="indian">Indian</option>
+                        <option value="burgers">Burgers</option>
+                        <option value="peruvian">Peruvian</option>
+                        <option value="hotdog">Hot Dogs</option>
+                        <option value="mediterranean">Mediterranean</option>
+                        <option value="asian">Asian</option>
+                        <option value="italian">Italian</option>
+                    </select></p>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+            <div class="profile">
+                {% else %}
+                <h1>{{ businessuser.business_name }}</h1>
+                <p>Email: {{ businessuser.email }} || Phone Number: {{ businessuser.phone_number }}</p>
+                <p>Food Category: {{ businessuser.food_category }}</p>
+                <p>Description: {{ businessuser.description }}</p>
+                <p>Current Location: {{ businessuser.current_location }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="footer">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

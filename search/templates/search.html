@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Food Truck Hub </title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style_search.css' %}"> 
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <div class="header">
+            <h1>Food Truck Hub</h1>
+            <a href="/">Home</a>
+        </div>
+        <div class="body">
+            <div class="body_header">
+                <h1>Search Results</h1>
+            </div>
+            <div class="search_results">
+                <form action="{% url 'searchfood' %}" method="POST">
+                    {% csrf_token %}
+                    <select name="q" >
+                        <option value="mexican">Mexican</option>
+                        <option value="sandwhiches">Sandwhiches</option>
+                        <option value="pizza">Pizza</option>
+                        <option value="bbq">BBQ</option>
+                        <option value="indian">Indian</option>
+                        <option value="burgers">Burgers</option>
+                        <option value="peruvian">Peruvian</option>
+                        <option value="hot_dogs">Hot Dogs</option>
+                        <option value="mediterranean">Mediterranean</option>
+                        <option value="asian">Asian</option>
+                        <option value="italian">Italian</option>
+                    </select>
+                    <input type="submit" name="submit" value="Search"/>
+                    </form>
+                {% for result in results %}
+                
+                <a href="/business_profile/{{ result.id }}">{{ result.business_name }}</a>
+                <br/>
+                
+                <p>{{ result.current_location }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="footer">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
